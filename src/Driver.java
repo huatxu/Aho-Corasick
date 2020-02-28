@@ -2,10 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Driver {
@@ -36,15 +33,22 @@ public class Driver {
 	}
 	private static long drive(int[] bounds, String toTest) {
 		ACFinder finder = new ACFinder();
+		HashMap<String, Integer> scoreWords = new HashMap<>();
 		for(int i = bounds[0]; i <= bounds[1]; i++) {
 			finder.addWord(words[i]);
+			if(!scoreWords.containsKey(words[i]))
+				scoreWords.put(words[i], scores[i]);
+			else
+				scoreWords.replace(words[i], scoreWords.get(words[i]) + scores[i]);
 		}
 		HashMap<String, Integer> result = finder.getTest(toTest);
 		int score = 0;
-		for(int j = bounds[0]; j <= bounds[1]; j++) {
-			
+		for(String key : result.keySet()) {
+			score += result.get(key) * scoreWords.get(key);
 		}
+		
 		System.out.println(result);
+		System.out.println(scoreWords);
 		System.out.println(toTest);
 		System.out.println(score);
 		return score;
