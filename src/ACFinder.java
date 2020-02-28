@@ -1,18 +1,44 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ACFinder {
 	HashMap<Character, Edge> rootNode;
-	
+	List<String> dictionary;
+	HashMap<String, Integer> answer;
 	public ACFinder() {
 		rootNode = new HashMap<>();
+		dictionary = new ArrayList<>();
+		answer = new HashMap<>();
 	}
-	// TODO: Devolver Clave: Cantidad de ocurrencias Valor: Ocurrencias
+	// TODO: Devolver Clave: Ocurrencias Valor: Cantidad de ocurrencias
 	public HashMap<String, Integer> getTest(String toTest) {
-		return null;
+		int length = toTest.length();
+		answer.forEach((String j, Integer k) -> answer.replace(j, 0));
+		HashMap<Character, Edge> nextNode = rootNode;
+		for(int i = 0; i < length; i++) {
+			String findingWord = "";
+			int lastIndex = i;
+			while(nextNode.containsKey(toTest.charAt(i))) {
+				findingWord = findingWord + toTest.charAt(i);;
+				System.out.println(findingWord);
+				if(nextNode.get(toTest.charAt(i)).isLeaf()) {
+					answer.replace(findingWord, answer.get(findingWord) + 1);
+				} 
+				nextNode = nextNode.get(toTest.charAt(i)).getChildren();
+				if(i < length - 1)
+					i++;
+			}
+			i = lastIndex;
+			nextNode = rootNode;
+		}		
+		return answer;
 	}
 	
 	public void addWord(String word) {
+		if(!dictionary.contains(word)) {
+		dictionary.add(word);
+		answer.put(word, 0);
 		int length = word.length();
 		Edge nextNode = null;
 		while(word.length() != 0) {
@@ -35,6 +61,7 @@ public class ACFinder {
 					nextNode.setLeaf(true);
 			}
 			word = word.substring(1);
+		}
 		}
 	}
 	private class Edge {
