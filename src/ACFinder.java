@@ -3,15 +3,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ACFinder {
-	HashMap<Character, Edge> rootNode;
-	List<String> dictionary;
-	HashMap<String, Integer> answer;
+	private HashMap<Character, Edge> rootNode;
+	private List<String> dictionary;
+	private HashMap<String, Integer> answer;
 	public ACFinder() {
 		rootNode = new HashMap<>();
 		dictionary = new ArrayList<>();
 		answer = new HashMap<>();
 	}
-	// TODO: Devolver Clave: Ocurrencias Valor: Cantidad de ocurrencias
+	// Devolver Clave: Ocurrencias Valor: Cantidad de ocurrencias
 	public HashMap<String, Integer> getTest(String toTest) {
 		int length = toTest.length();
 		answer.forEach((String j, Integer k) -> answer.replace(j, 0));
@@ -21,7 +21,6 @@ public class ACFinder {
 			int lastIndex = i;
 			while(nextNode.containsKey(toTest.charAt(i))) {
 				findingWord = findingWord + toTest.charAt(i);;
-				System.out.println(findingWord);
 				if(nextNode.get(toTest.charAt(i)).isLeaf()) {
 					answer.replace(findingWord, answer.get(findingWord) + 1);
 				} 
@@ -34,7 +33,6 @@ public class ACFinder {
 		}		
 		return answer;
 	}
-	
 	public void addWord(String word) {
 		if(!dictionary.contains(word)) {
 		dictionary.add(word);
@@ -57,8 +55,9 @@ public class ACFinder {
 					nextNode.getChildren().put(word.charAt(0), new Edge(nextChar));
 					nextNode = nextNode.getChildren().get(nextChar);
 				}
-				if(word.length() == 1) 
-					nextNode.setLeaf(true);
+			}
+			if(word.length() == 1) {
+				nextNode.setLeaf(true);
 			}
 			word = word.substring(1);
 		}
@@ -74,6 +73,7 @@ public class ACFinder {
 		private HashMap<Character, Edge> getChildren() {
 			return children;
 		} 
+		@SuppressWarnings("unused")
 		private char getCharacter() {
 			return character;
 		}
